@@ -1,112 +1,90 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
-</head>
-<body>
+# RPA para Coleta de Datas de Movimentação Financeira
 
-<header>
-  <h1>🤖 Robô Selenium - Consulta de Movimentações Financeiras</h1>
-  <p>Automatize a extração de dados de convênios no portal TransfereGov</p>
-</header>
+![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)
+![Libraries](https://img.shields.io/badge/Libraries-Selenium%20%7C%20Pandas-orange.svg)
+![Status](https://img.shields.io/badge/Status-Funcional-success.svg)
 
-<main>
+Este projeto é um robô de automação (RPA) construído em Python, projetado para enriquecer uma planilha de controle existente com dados de data extraídos do portal TransfereGov do governo brasileiro.
 
-  <section>
-    <h2>✨ Funcionalidades</h2>
-    <ul>
-      <li>✅ Conecta ao navegador já autenticado com Chrome DevTools</li>
-      <li>✅ Lê dados da planilha de entrada (.xlsx)</li>
-      <li>✅ Navega e pesquisa convênios no sistema TransfereGov</li>
-      <li>✅ Extrai datas mais recentes de movimentações financeiras</li>
-      <li>✅ Gera planilha de saída com colunas <code>Data Mais Recente</code> e <code>Movimentação</code></li>
-    </ul>
-  </section>
+## Descrição do Projeto
 
-  <section>
-    <h2>📁 Estrutura do Projeto</h2>
-    <pre><code>.
-├── robo_movimentacao.py
-├── requirements.txt
-├── README.html
-└── planilhas/
-    └── entrada.xlsx</code></pre>
-  </section>
+A principal função deste robô é automatizar a consulta da data de movimentação financeira mais recente para uma lista de convênios. O script lê um arquivo Excel, itera sobre cada número de convênio, navega no portal, extrai a data desejada e, por fim, atualiza a planilha original com as novas informações, salvando o resultado em um novo arquivo para manter a integridade dos dados originais.
 
-  <section>
-    <h2>🛠️ Requisitos</h2>
-    <ul>
-      <li>Python 3.8+</li>
-      <li>Google Chrome com debug ativado:
-        <pre><code>chrome.exe --remote-debugging-port=9222 --user-data-dir="C:/chrome-dev-profile"</code></pre>
-      </li>
-      <li>Instale as dependências:
-        <pre><code>pip install -r requirements.txt</code></pre>
-      </li>
-    </ul>
-    <p><strong>Conteúdo de <code>requirements.txt</code>:</strong></p>
-    <pre><code>selenium
-pandas
-openpyxl
-webdriver-manager</code></pre>
-  </section>
+## Funcionalidades Principais
 
-  <section>
-    <h2>📈 Como Usar</h2>
-    <ol>
-      <li>Abra o Chrome com porta de depuração habilitada</li>
-      <li>Altere o caminho da planilha no script</li>
-      <li>Execute o script com <code>python robo_movimentacao.py</code></li>
-    </ol>
-  </section>
+- **Sistema de Logging:** Utiliza o módulo `logging` do Python para registrar detalhadamente cada passo da execução, salvando os logs em um arquivo `robo_log.txt` e exibindo-os no console.
+- **Enriquecimento de Dados:** Lê uma planilha Excel, preserva todas as colunas e dados originais e adiciona duas novas colunas: `Data Mais Recente` e `Movimentação`.
+- **Navegação Robusta:** Emprega mecanismos de fallback (tentando seletores alternativos via JavaScript) para navegar em menus que podem ter variações na interface do usuário.
+- **Salvamento Incremental:** Salva o progresso na planilha de saída a cada 5 itens processados, garantindo que nenhum dado seja perdido em caso de interrupção durante longas execuções.
+- **Controle de Versão de Arquivos:** Cria um novo arquivo de saída com o sufixo `_COM_DATAS`. Se um arquivo com o mesmo nome já existir, ele cria versões numeradas (ex: `_COM_DATAS_1`, `_COM_DATAS_2`) para evitar a sobrescrita de execuções anteriores.
+- **Estimativa de Tempo de Execução:** Calcula e exibe o tempo estimado para a conclusão do processo com base no tempo médio gasto por item.
+- **Conexão com Navegador Existente:** Permite que o script se conecte a uma sessão do Chrome já autenticada, simplificando o processo de login e evitando problemas com CAPTCHA.
 
-  <section>
-    <h2>🖼️ Exemplo de Saída</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>N° Convênio</th>
-          <th>Data Mais Recente</th>
-          <th>Movimentação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>2020XXXX</td>
-          <td>12/03/2024</td>
-          <td><span class="badge">SIM</span></td>
-        </tr>
-        <tr>
-          <td>2021YYYY</td>
-          <td>—</td>
-          <td><span class="badge">NÃO</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+## Pré-requisitos
 
-  <section>
-    <h2>⚠️ Possíveis Problemas</h2>
-    <ul>
-      <li><strong>Erro ao conectar ao navegador:</strong> verifique se o Chrome foi aberto com o parâmetro correto.</li>
-      <li><strong>Coluna 'N° Convênio' não encontrada:</strong> confirme o nome da aba na planilha.</li>
-      <li><strong>Site lento ou travado:</strong> o script tentará recarregar e seguir em frente.</li>
-    </ul>
-  </section>
+- [Python 3.7](https://www.python.org/downloads/) ou superior
+- [Google Chrome](https://www.google.com/chrome/) (navegador web)
 
-  <section>
-    <h2>👨‍💻 Autor</h2>
-    <p><strong>Diego Brito</strong><br>
-      Desenvolvedor Python e entusiasta de automações com Selenium</p>
-  </section>
+## Instalação e Configuração
 
-  <section>
-    <h2>📝 Licença</h2>
-    <p>Este projeto é de uso livre para fins educacionais e internos. Consulte o autor para fins comerciais.</p>
-  </section>
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    cd seu-repositorio
+    ```
 
-</main>
+2.  **Crie e ative um ambiente virtual (recomendado):**
+    ```bash
+    # Para Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
 
-</body>
-</html>
+3.  **Instale as dependências:**
+    Crie um arquivo chamado `requirements.txt` com o seguinte conteúdo:
+    ```
+    pandas
+    selenium
+    webdriver-manager
+    openpyxl
+    ```
+    Execute o comando de instalação:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Configure o Caminho do Arquivo de Entrada:**
+    Abra o script Python e edite a constante `INPUT_EXCEL_PATH` no início do arquivo, inserindo o caminho completo para a sua planilha.
+    ```python
+    # Caminho para a planilha de entrada. Altere este valor conforme necessário.
+    INPUT_EXCEL_PATH = r"C:\caminho\para\sua\planilha.xlsx"
+    ```
+
+## Como Executar
+
+1.  **Prepare a Planilha de Entrada:**
+    Garanta que sua planilha Excel contenha uma aba chamada `Document_CH321` e, dentro dela, uma coluna chamada `N° Convênio`.
+
+2.  **Inicie o Google Chrome em Modo de Depuração:**
+    Feche todas as janelas do Chrome e inicie uma nova usando o terminal com o comando abaixo. Isso é essencial para que o script possa se conectar.
+    ```bash
+    # Para Windows
+    "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222
+    ```
+
+3.  **Acesse o Sistema Manualmente:**
+    Na nova janela do Chrome, navegue até o portal TransfereGov, faça o login e deixe o navegador pronto na página principal.
+
+4.  **Execute o Script:**
+    Abra um novo terminal (não o que você usou para iniciar o Chrome), navegue até a pasta do projeto e execute o script:
+    ```bash
+    python nome_do_script.py
+    ```
+
+O robô iniciará a execução, e você poderá acompanhar o progresso através dos logs no console e no arquivo `robo_log.txt`.
+
+## Observações Importantes
+
+> **Fragilidade dos Seletores (XPath):** Este script utiliza seletores XPath absolutos, que são suscetíveis a quebrar com mudanças na estrutura do site. Para maior durabilidade, recomenda-se a substituição por seletores mais estáveis como IDs, classes ou XPaths relativos.
+
+> **Uso Específico:** O robô foi desenhado para o fluxo de navegação e a estrutura de DOM do portal TransfereGov. Ele não funcionará em outros sites sem adaptações significativas.
